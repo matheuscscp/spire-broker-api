@@ -1,0 +1,8 @@
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"group":"system:masters","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"group":"system:nodes","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"group":"system:serviceaccounts:kube-system","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"user":"system:kube-controller-manager","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"user":"system:kube-scheduler","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"user":"kubernetes-admin","namespace":"*","resource":"*","apiGroup":"*","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"group":"system:authenticated","nonResourcePath":"*"}}
+{"apiVersion":"abac.authorization.kubernetes.io/v1beta1","kind":"Policy","spec":{"user":"system:serviceaccount:demo:broker-allowed","namespace":"demo","resource":"widgets","apiGroup":"example.io"}}

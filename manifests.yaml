@@ -1,0 +1,75 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: widgets.example.io
+spec:
+  group: example.io
+  scope: Namespaced
+  names:
+    plural: widgets
+    singular: widget
+    kind: Widget
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+---
+apiVersion: example.io/v1
+kind: Widget
+metadata:
+  name: widget-1
+  namespace: demo
+spec: {}
+---
+# The broker workloads (just identities; never authenticated in this PoC).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: broker-allowed
+  namespace: demo
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: broker-denied
+  namespace: demo
+---
+# broker-allowed may 'impersonate' widget-1 specifically (per-resource scoping).
+# broker-denied has no such grant.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: impersonate-widget-1
+  namespace: demo
+rules:
+  - apiGroups: ["example.io"]
+    resources: ["widgets"]
+    resourceNames: ["widget-1"]
+    verbs: ["impersonate"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: broker-allowed-can-impersonate-widget-1
+  namespace: demo
+subjects:
+  - kind: ServiceAccount
+    name: broker-allowed
+    namespace: demo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: impersonate-widget-1
